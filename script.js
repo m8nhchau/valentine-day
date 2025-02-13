@@ -2,30 +2,24 @@ const backgroundMusic = document.getElementById("backgroundMusic");
 
 // Hàm để phát nhạc nền
 function playMusic() {
-    localStorage.setItem("musicPlaying", "true");
+    backgroundMusic.muted = false; // Bỏ tắt tiếng
     backgroundMusic.play().catch(error => {
         console.log("Âm thanh không thể phát:", error);
     });
 }
 
-// Lưu thời gian âm thanh khi nhấn nút "Em đồng ý"
-function saveCurrentTime() {
-    localStorage.setItem("musicCurrentTime", backgroundMusic.currentTime);
-}
-
 // Hàm khởi tạo nhạc nền khi trang được tải
 function initializeMusic() {
-    if (localStorage.getItem("musicPlaying") === "true") {
-        backgroundMusic.currentTime = parseFloat(localStorage.getItem("musicCurrentTime")) || 0;
-        backgroundMusic.play().catch(error => {
-            console.log("Âm thanh không thể phát:", error);
-        });
-    }
+    backgroundMusic.currentTime = parseFloat(localStorage.getItem("musicCurrentTime")) || 0;
+    backgroundMusic.play().catch(error => {
+        console.log("Âm thanh không thể phát:", error);
+    });
 }
 
 // Xử lý khi nhấn nút "Em đồng ý"
 document.getElementById("yes-btn")?.addEventListener("click", () => {
-    saveCurrentTime(); // Lưu thời gian hiện tại
+    localStorage.setItem("musicPlaying", "true");
+    localStorage.setItem("musicCurrentTime", backgroundMusic.currentTime); // Lưu thời gian hiện tại
     playMusic();
     window.location.href = 'yay.html'; // Chuyển đến trang mới
 });
